@@ -11,7 +11,17 @@ class Setting {
 	randomize() {
 		var value;
 		if (!this.isBoolean){
-			value = Math.floor(Math.random() * (this.maxRange - this.minRange)) + this.minRange;
+			if(this.round >= 1){
+				value = Math.round(Math.random() * (this.maxRange - this.minRange)) + this.minRange;
+			}
+			
+			if(this.round > 1){
+				value = Math.round(value / this.round) * this.round;
+			}
+			else if(this.round < 1){
+				value = Math.round(Math.random() * (this.maxRange - this.minRange) / this.round) + this.minRange / this.round;
+				value = value / (1 / this.round);
+			}
 		}
 		else {
 			value = Math.floor(Math.random() * 2) >= 1 ? "On" : "Off";
@@ -34,8 +44,6 @@ var settings = [
 
 
 function randomize() {
-	console.log(document.getElementById('title').offsetWidth);
-	console.log(document.getElementById('title').getBoundingClientRect());
 	var i;
 	for (i = 0; i < settings.length; i++) {
 	  settings[i].randomize();
